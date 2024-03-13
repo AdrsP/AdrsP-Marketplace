@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+#from ..app import bcrypt
 
 db = SQLAlchemy()
 
@@ -10,8 +11,7 @@ class User(db.Model):
     budget = db.Column(db.Float, nullable=False, default=1000) #default just gives an default value to the variable/column
     items = db.relationship('Item', backref='owned_user', lazy=True) 
     """the property backref: owned_user allows an "external column that shows which 
-    user owns the product, and the lazy will allow to load all the elements at the
-    same time"""
+    user owns the product, and the lazy will allow to load all the elements at once"""
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -23,6 +23,14 @@ class User(db.Model):
             "budget": self.email,
             # do not serialize the password, its a security breach
         }
+    
+    @property
+    def password(self):
+        return self.password
+    
+    """@password.setter
+    def password(self, plain_text_password):
+        self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')"""
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)

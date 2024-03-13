@@ -19,3 +19,22 @@ def get_items():
     results = list(map(lambda item : item.serialize(), all_items))
 
     return jsonify(results), 200
+
+@api.route("/singup", methods=["POST"]) 
+def new_user():
+    data = request.json                  
+    email = request.json.get("email", None)          
+    user = User.query.filter_by(email=email).first() 
+
+    if user is None:                                  
+        new_record = User( username = data.username,
+                            email = data.email,
+                            password = data.password_hash,
+        )
+        db.session.add(new_record)
+        db.session.commit()
+
+        return jsonify({'message': 'User created successfully'}), 201
+    
+    else:
+        return jsonify({'message': 'that user already exist'}), 400

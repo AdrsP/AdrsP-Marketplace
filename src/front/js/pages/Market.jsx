@@ -39,10 +39,10 @@ export const Market = () => {
                 <td>{item.barcode}</td>
                 <td>{item.price}</td>
                 <td>
-                  <button class="btn btn-outline btn-info me-2">
+                  <button className="btn btn-outline btn-info me-2">
                     More Info
                   </button>
-                  <button class="btn btn-outline btn-success">
+                  <button className="btn btn-outline btn-success">
                     Purchase this Item
                   </button>
                 </td>
