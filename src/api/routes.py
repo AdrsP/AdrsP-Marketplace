@@ -29,7 +29,7 @@ def new_user():
     user = User.query.filter_by(email=email).first() 
 
     if user is None:                                  
-        new_record = User( **data)
+        new_record = User(**data)
         db.session.add(new_record)
         db.session.commit()
 

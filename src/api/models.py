@@ -1,7 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
-#from ..app import bcrypt
 
 db = SQLAlchemy()
+
+# i had to create a function to import and call the bcrypt due circular imports
+def encrypt_handler():
+    from app import bcrypt
+    return bcrypt
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,13 +28,13 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
-    """@property
+    @property
     def password(self):
-        return self.password"""
+        return self.password
     
-    """@password.setter
+    @password.setter
     def password(self, plain_text_password):
-        self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')"""
+        self.password_hash = encrypt_handler().generate_password_hash(plain_text_password).decode('utf-8')
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,3 +56,4 @@ class Item(db.Model):
             "description": self.description,
             "owner": self.owner,
         }
+    
