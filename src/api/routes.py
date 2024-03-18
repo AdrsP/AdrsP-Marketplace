@@ -43,14 +43,14 @@ def user_login():
     email = request.json.get("email", None)   
     password = request.json.get("password", None)   
     
-    user = User.query.filter_by(email=email, password_hash=password).first() 
+    attempted_user = User.query.filter_by(email=email).first() 
 
-    if not user:
+    if not attempted_user or not(attempted_user.check_password_correction(attempted_password = password)):
         return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=email) 
     response_body = {
-        "user" : user.serialize(),
+        "user" : attempted_user.serialize(),
         "access_token" : access_token
     }
     return jsonify(response_body), 200

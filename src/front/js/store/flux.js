@@ -21,7 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify({
               username: username,
               email: email,
-              password_hash: password,
+              password: password,
             }),
             headers: { "Content-Type": "application/json" },
           });

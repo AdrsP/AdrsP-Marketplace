@@ -36,6 +36,10 @@ class User(db.Model):
     def password(self, plain_text_password):
         self.password_hash = encrypt_handler().generate_password_hash(plain_text_password).decode('utf-8')
 
+    # code to check the encrypted password against the password that the user is posting
+    def check_password_correction(self, attempted_password):
+        return encrypt_handler().check_password_hash(self.password_hash, attempted_password)
+
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
