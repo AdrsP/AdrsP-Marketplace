@@ -24,15 +24,15 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "budget": self.email,
+            "budget": self.budget,
             # do not serialize the password, its a security breach
         }
     
-    @property
+    @property                 # this property will get the password from a dictionary like when we create a new user
     def password(self):
         return self.password
     
-    @password.setter
+    @password.setter          # this method will allow us to set the encriptation of the password in the password hash to store it in the database
     def password(self, plain_text_password):
         self.password_hash = encrypt_handler().generate_password_hash(plain_text_password).decode('utf-8')
 

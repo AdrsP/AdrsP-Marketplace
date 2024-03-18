@@ -74,7 +74,11 @@ export const Login = () => {
           </div>
         </div>
         <div className="col-12 text-center mt-2">
-          <button className="btn btn-primary btn-large" type="submit">
+          <button
+            onClick={login}
+            className="btn btn-primary btn-large"
+            type="submit"
+          >
             Login Now !!
           </button>
         </div>

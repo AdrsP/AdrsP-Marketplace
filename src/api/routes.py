@@ -43,7 +43,7 @@ def user_login():
     email = request.json.get("email", None)   
     password = request.json.get("password", None)   
     
-    user = User.query.filter_by(email=email, password=password).first() 
+    user = User.query.filter_by(email=email, password_hash=password).first() 
 
     if not user:
         return jsonify({"msg": "Bad username or password"}), 401
