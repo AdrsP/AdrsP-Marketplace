@@ -31,6 +31,28 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
+      login: async (mail, password) => {
+        try {
+          const response = await fetch(process.env.BACKEND_URL + "api/login", {
+            method: "POST",
+            body: JSON.stringify({
+              email: mail,
+              password: password,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (response.status === 200) {
+            const data = await response.json();
+            setStore({ user: data.user });
+            localStorage.setItem("token", data.access_token);
+            return true;
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      },
     },
   };
 };

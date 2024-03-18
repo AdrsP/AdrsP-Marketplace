@@ -24,9 +24,9 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
-    @property
+    """@property
     def password(self):
-        return self.password
+        return self.password"""
     
     """@password.setter
     def password(self, plain_text_password):

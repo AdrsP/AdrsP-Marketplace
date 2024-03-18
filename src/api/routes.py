@@ -6,6 +6,8 @@ from api.models import db, User, Item
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -27,10 +29,7 @@ def new_user():
     user = User.query.filter_by(email=email).first() 
 
     if user is None:                                  
-        new_record = User( username = data.username,
-                            email = data.email,
-                            password = data.password_hash,
-        )
+        new_record = User( **data)
         db.session.add(new_record)
         db.session.commit()
 
@@ -38,3 +37,21 @@ def new_user():
     
     else:
         return jsonify({'message': 'that user already exist'}), 400
+    
+@api.route("/login", methods=["POST"]) 
+def user_login():                     
+    email = request.json.get("email", None)   
+    password = request.json.get("password", None)   
+    
+    user = User.query.filter_by(email=email, password=password).first() 
+
+    if not user:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=email) 
+    response_body = {
+        "user" : user.serialize(),
+        "access_token" : access_token
+    }
+    return jsonify(response_body), 200
+
